@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+from apiflask import APIFlask
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -16,7 +17,22 @@ from api.commands import setup_commands
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
-app = Flask(__name__)
+app = APIFlask(__name__, docs_path='/', docs_ui='rapidoc')
+app.config['RAPIDOC_THEME'] = 'dark'
+app.security_schemes = {
+    'jwt': {
+        'type': 'http',
+        'scheme': 'bearer',
+        'in': 'header',
+        'bearerFormat': 'JWT'
+    }
+}
+app.config['SERVERS'] = [
+    {
+        'name': 'Development',
+        'url': os.getenv('BACKEND_URL')
+    }
+]
 app.url_map.strict_slashes = False
 
 # database condiguration
@@ -48,11 +64,11 @@ def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
 # generate sitemap with all your endpoints
-@app.route('/')
-def sitemap():
-    if ENV == "development":
-        return generate_sitemap(app)
-    return send_from_directory(static_file_dir, 'index.html')
+# @app.route('/')
+# def sitemap():
+#     if ENV == "development":
+#         return generate_sitemap(app)
+#     return send_from_directory(static_file_dir, 'index.html')
 
 # any other endpoint will try to serve it like a static file
 @app.route('/<path:path>', methods=['GET'])
