@@ -38,7 +38,7 @@ const PetsPage = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col col-10 offset-1 d-flex flex-row justify-content-between flex-wrap">
+        <div className="col col-10 offset-1 d-flex flex-row justify-content-around flex-wrap">
           {pets.map((elem, idx) => (
             <PetCard pet={elem} key={idx} />
           ))}
