@@ -2,7 +2,7 @@ import React from "react";
 
 const PetCard = ({ pet }) => {
   return (
-    <div className="card" style={{ width: "30%" }}>
+    <div className="card mb-3" style={{ width: "30%" }}>
       <img
         src={`https://via.placeholder.com/300/${pet.profile_color}`}
         className="card-img-top"

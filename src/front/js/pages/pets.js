@@ -18,7 +18,7 @@ const PetsPage = () => {
     }
     setInt(
       setInterval(() => {
-        fetch(process.env.BACKEND_URL + `/api/pets?page=${page}`)
+        fetch(process.env.BACKEND_URL + `/api/pets?page=${page}&per_page=9`)
           .then((resp) => {
             if (resp.ok) {
               return resp;
