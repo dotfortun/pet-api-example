@@ -31,6 +31,7 @@ class Pet(db.Model):
     age = db.Column(db.Float)
     profile_color = db.Column(db.String(8))
     pet_color = db.Column(db.Text)
+    pet_type = db.Column(db.Text)
     rating = db.Column(db.Integer)
     created = db.Column(db.DateTime, default=datetime.now)
     updated = db.Column(
@@ -50,7 +51,7 @@ class PetOutSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Pet
         fields = (
-            'id', 'name', 'age', 'profile_color',
+            'id', 'name', 'age', 'profile_color', 'pet_type',
             'pet_color', 'rating', 'created', 'updated'
         )
 
@@ -66,12 +67,13 @@ class PetPutSchema(ma.SQLAlchemyAutoSchema):
     age = af.Float(required=False, validate=av.Range(min=0))
     profile_color = af.String(required=False)
     pet_color = af.String(required=False)
+    pet_type = af.String(required=False)
     rating = af.Integer(required=False, validate=av.Range(min=10))
 
     class Meta:
         model = Pet
         fields = (
-            'id', 'name', 'age',
+            'id', 'name', 'age', 'pet_type',
             'profile_color', 'pet_color', 'rating'
         )
 
@@ -86,5 +88,6 @@ class PetPostSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Pet
         fields = (
-            'name', 'age', 'profile_color', 'pet_color', 'rating'
+            'name', 'age', 'profile_color',
+            'pet_color', 'rating', 'pet_type',
         )
