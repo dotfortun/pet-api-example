@@ -3,6 +3,7 @@ import { PetCard } from "../component/pet";
 
 const PetsPage = () => {
   const [pets, setPets] = useState([]);
+  const [int, setInt] = useState(null);
   const [page, setPage] = useState(1);
 
   const decPage = () => {
@@ -12,12 +13,24 @@ const PetsPage = () => {
   };
 
   useEffect(() => {
-    setInterval(() => {
-      fetch(process.env.BACKEND_URL + `/api/pets?page=${page}`)
-        .then((resp) => resp.json())
-        .then((data) => setPets(data.pets));
-    }, 1000);
-  }, []);
+    if (int) {
+      clearInterval(int);
+    }
+    setInt(
+      setInterval(() => {
+        fetch(process.env.BACKEND_URL + `/api/pets?page=${page}`)
+          .then((resp) => {
+            if (resp.ok) {
+              return resp;
+            } else {
+              decPage();
+            }
+          })
+          .then((resp) => resp.json())
+          .then((data) => setPets(data.pets));
+      }, 1000)
+    );
+  }, [page]);
 
   return (
     <div className="container">
@@ -39,7 +52,7 @@ const PetsPage = () => {
       </div>
       <div className="row">
         <div className="col col-10 offset-1 d-flex flex-row justify-content-around flex-wrap">
-          {pets.map((elem, idx) => (
+          {pets?.map((elem, idx) => (
             <PetCard pet={elem} key={idx} />
           ))}
         </div>
