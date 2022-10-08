@@ -17,15 +17,18 @@ from api.commands import setup_commands
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
-app = APIFlask(__name__, docs_path='/', docs_ui='rapidoc')
+app = APIFlask(__name__, title='PetAPI', docs_path='/', docs_ui='rapidoc')
 app.config['RAPIDOC_THEME'] = 'dark'
-app.security_schemes = {
-    'jwt': {
-        'type': 'http',
-        'scheme': 'bearer',
-        'in': 'header',
-        'bearerFormat': 'JWT'
-    }
+# app.security_schemes = {
+#     'jwt': {
+#         'type': 'http',
+#         'scheme': 'bearer',
+#         'in': 'header',
+#         'bearerFormat': 'JWT'
+#     }
+# }
+app.info = {
+    'description': "The beginning of the backend of the world's first pet-only social network.  Humans need not apply.",
 }
 app.config['SERVERS'] = [
     {
@@ -72,6 +75,7 @@ def handle_invalid_usage(error):
 
 # any other endpoint will try to serve it like a static file
 @app.route('/<path:path>', methods=['GET'])
+@app.doc(hide=True)
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = 'index.html'
