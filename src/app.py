@@ -27,9 +27,14 @@ app.config['RAPIDOC_THEME'] = 'dark'
 #         'bearerFormat': 'JWT'
 #     }
 # }
+
+admin_url = os.getenv("BACKEND_URL") + "/admin/"
+
 app.info = {
-    'description': "The beginning of the backend of the world's first pet-only social network.  Humans need not apply.",
+    'description': "The beginning of the backend of the world's first pet-only social network. " +
+    "Humans need not apply. You can find the DB admin panel <a href='{}' target='_blank'>here</a>.".format(admin_url),
 }
+
 app.config['SERVERS'] = [
     {
         'name': 'Development',
