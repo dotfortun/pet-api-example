@@ -14,7 +14,7 @@ const PetCard = ({ pet }) => {
             `They are ${pet.age} years old, and are rated a solid ${pet.rating}/10.`}
         </p>
         <div className="card-footer text-muted">
-          Last updated: {pet.updated}
+          Last updated: {new Date(pet.updated).toLocaleString()}
         </div>
       </div>
     </div>
